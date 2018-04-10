@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:include="fragments/head" th:with="pageTitle='Travelers\' life'"></head>
+
+<body>
+
+<header th:replace="fragments/header"></header>
+
+<main th:replace="${view}"></main>
+
+<footer th:replace="fragments/footer"></footer>
+
+</body>
+</html>
