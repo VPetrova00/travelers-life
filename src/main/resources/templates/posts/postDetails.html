@@ -1,0 +1,16 @@
+<main>
+    <div id="map" style="width:30%; height:300px"></div>
+
+    <script>
+        function myMap() {
+            let mapCanvas = document.getElementById("map");
+            let mapOptions = {
+                // center: new google.maps.LatLng(42.698334, 23.319941),
+                zoom: 10
+            };
+            let map = new google.maps.Map(mapCanvas, mapOptions);
+        }
+    </script>
+    <script type="text/javascript"
+            th:src="@{https://maps.googleapis.com/maps/api/js?key=AIzaSyBPSMs5AmweKezisdODLBCFn_PPlZ5fiOA&callback=myMap?q={latitude},{longitude}}"></script>
+</main>
