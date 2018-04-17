@@ -1,8 +1,10 @@
 <main>
-    <div class="container">
-        <div class="panel panel-info">
-            <div class="panel-heading">First item</div>
-            <div class="panel-body">Content</div>
+    <div class="container col-md-8 homePost">
+        <div class="panel panel-info" th:each="post: ${allPosts}">
+            <div class="panel-heading" th:text="*{post.title}"></div>
+            <div class="panel-body">
+                <img th:src="|data:image/jpg;base64,@{${post.imagePath}}|" class="postImage homeImage" />
+            </div>
         </div>
     </div>
 </main>

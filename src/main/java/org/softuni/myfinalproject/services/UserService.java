@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service("projectUserDetailsService")
-public class ProjectUserDetailsService implements UserDetailsService{
+public class UserService implements UserDetailsService{
     private final UserRepository userRepository;
 
     private final ModelMapper modelMapper;
@@ -29,7 +29,7 @@ public class ProjectUserDetailsService implements UserDetailsService{
     private final RoleService roleService;
 
     @Autowired
-    public ProjectUserDetailsService(UserRepository userRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;

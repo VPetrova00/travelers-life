@@ -1,6 +1,13 @@
 package org.softuni.myfinalproject.models.entities;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -15,9 +22,13 @@ public class Post {
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     private User author;
 
-//    private List<Photos> photos;
-
     private String content;
+
+    private String imagePath;
+
+    private BigDecimal latitude;
+
+    private BigDecimal longitude;
 
     public Post() {
     }
@@ -52,5 +63,29 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
     }
 }

@@ -17,7 +17,7 @@ public class PostModel {
 
     private String story;
 
-    private File image;
+    private String imagePath;
 
     public BigDecimal getLatitude() {
         return latitude;
@@ -51,11 +51,11 @@ public class PostModel {
         this.story = story;
     }
 
-    public File getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(File image) {
-        this.image = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

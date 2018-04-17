@@ -1,10 +1,12 @@
 package org.softuni.myfinalproject.controllers;
 
+import org.softuni.myfinalproject.models.entities.Post;
 import org.softuni.myfinalproject.models.entities.User;
 import org.softuni.myfinalproject.models.viewModels.UserLoginModel;
 import org.softuni.myfinalproject.models.viewModels.UserRegistrationModel;
+import org.softuni.myfinalproject.repositories.PostRepository;
 import org.softuni.myfinalproject.repositories.UserRepository;
-import org.softuni.myfinalproject.services.BlogUserDetailsService;
+import org.softuni.myfinalproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -18,9 +20,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.Files;
+import java.util.Base64;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -29,7 +37,10 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private BlogUserDetailsService blogUserDetailsService;
+    private UserService userService;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @GetMapping("/users/register")
     public String register(Model model) {
@@ -51,7 +62,7 @@ public class UserController {
             return "redirect:/users/register";
         }
 
-        this.blogUserDetailsService.register(viewModel);
+        this.userService.register(viewModel);
 
         return "redirect:/users/login";
     }
@@ -65,7 +76,7 @@ public class UserController {
 
     @GetMapping("/users/profile")
     @PreAuthorize("isAuthenticated()")
-    public String userProfile(Model model) {
+    public String userProfile(Model model) throws IOException {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
@@ -75,6 +86,19 @@ public class UserController {
         model.addAttribute("username", user.getUsername());
         model.addAttribute("view", "users/profile");
 
+        List<Post> allPosts = this.postRepository.findByAuthorId(user.getId());
+
+        String encodedImage = "";
+        for (Post post : allPosts) {
+            BufferedImage image = ImageIO.read(new File(post.getImagePath()));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpg", baos);
+            byte[] res = baos.toByteArray();
+             encodedImage = Base64.getEncoder().encodeToString(res);
+             post.setImagePath(encodedImage);
+        }
+
+        model.addAttribute("postModels", allPosts);
         return "base-layout";
     }
 

@@ -1,15 +1,23 @@
 <main xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <h1 th:text="|${username}'s profile|"></h1>
-    <form th:action="@{/profile/upload}" method="get">
+    <h1 th:text="|${username}'s profile|" style="font-weight: normal"></h1>
+    <div>
         <div class="centerProfileForm">
             <div>
-                <img src="../../static/img/index.jpg" th:src="@{/img/index.jpg}" height="225" width="224"
-                     name="profilePicture"/><br/>
-                <div style="margin-top: 5px; margin-left: -16%">Full name: <span>Vesela Petrova</span></div>
-                <button class="btn btn-primary" name="uploadPhotoBtn" style="margin-left: 15%; margin-top: 3%">Edit
-                    profile
-                </button>
+                <img src="../../static/img/avatar.png" th:src="@{/img/avatar.png}" height="250"/><br/>
             </div>
         </div>
-    </form>
+        <p style="margin-left: 47%; font-weight: bold; margin-top: 20px;">
+            <i>My Posts:</i>
+        </p>
+        <div th:each="postModel: ${postModels}">
+            <div class="container col-md-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading" th:text="*{postModel.title}"></div>
+                    <div class="panel-body">
+                        <img th:src="|data:image/jpg;base64,@{${postModel.imagePath}}|" class="postImage" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
