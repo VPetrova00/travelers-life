@@ -1,5 +1,6 @@
 <head th:fragment="head">
     <title th:if="${pageTitle}" th:text="${pageTitle}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet">
    <style>
@@ -10,6 +11,10 @@
 
        .form-group button {
            margin-left: 27%;
+       }
+
+       img {
+           max-width: 100%;
        }
 
        h1 {
@@ -24,12 +29,11 @@
        }
 
        footer {
-           padding-top: 40px;
+           margin-top: 40px;
            clear: both;
            position: relative;
            z-index: 10;
            height: 3em;
-           margin-top: -3em;
 
            /*position: ;*/
            /*right: 0;*/
@@ -87,6 +91,17 @@
 
        .btn-default {
            color: #008081;
+       }
+
+       @media screen and (max-width: 500px) {
+           .header a {
+               float: none;
+               display: block;
+               text-align: left;
+           }
+           header {
+               float: none;
+           }
        }
    </style>
 </head>

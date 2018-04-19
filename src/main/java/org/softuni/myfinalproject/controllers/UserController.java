@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -112,5 +113,30 @@ public class UserController {
         }
 
         return "redirect:/users/login?logout";
+    }
+
+    @GetMapping("/users/profile/{username}")
+    public String getProfileByUsername(@PathVariable String username, Model model) throws IOException {
+        if (!this.userRepository.existsByUsername(username)) {
+            return "redirect:/users/profile";
+        }
+
+        List<Post> posts = this.postRepository.findByAuthorUsername(username);
+
+        String encodedImage = "";
+        for (Post post : posts) {
+            BufferedImage image = ImageIO.read(new File(post.getImagePath()));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpg", baos);
+            byte[] res = baos.toByteArray();
+            encodedImage = Base64.getEncoder().encodeToString(res);
+            post.setImagePath(encodedImage);
+        }
+
+        String userName = this.userRepository.findByUsername(username).getUsername();
+        model.addAttribute("view", "users/profile");
+        model.addAttribute("username", userName);
+        model.addAttribute("postModels", posts);
+        return "base-layout";
     }
 }

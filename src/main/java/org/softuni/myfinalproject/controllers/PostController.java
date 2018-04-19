@@ -7,19 +7,17 @@ import org.softuni.myfinalproject.repositories.PostRepository;
 import org.softuni.myfinalproject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.Enumeration;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -77,5 +75,31 @@ public class PostController {
         this.postRepository.saveAndFlush(post);
 
         return "redirect:/users/profile";
+    }
+
+    @GetMapping("/post/details/{id}")
+    public String viewPostDetails(Model model, @PathVariable Long id) {
+        if (!this.postRepository.existsById(id)) {
+            return "redirect:/";
+        }
+
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+            UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            User entityUser = this.userRepository.findByUsername(user.getUsername());
+
+            model.addAttribute("userModel", entityUser);
+        }
+
+        Post post = this.postRepository.findFirstById(id);
+
+        String authorUsername = post.getAuthor().getUsername();
+
+        String debug = "";
+        model.addAttribute("username", authorUsername);
+        model.addAttribute("postDetailsModel", post);
+        model.addAttribute("view", "posts/postDetails");
+
+        return "base-layout";
     }
 }

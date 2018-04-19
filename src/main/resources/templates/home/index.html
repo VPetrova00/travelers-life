@@ -1,9 +1,11 @@
-<main>
+<main xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container col-md-8 homePost">
         <div class="panel panel-info" th:each="post: ${allPosts}">
             <div class="panel-heading" th:text="*{post.title}"></div>
             <div class="panel-body">
-                <img th:src="|data:image/jpg;base64,@{${post.imagePath}}|" class="postImage homeImage" />
+                <img th:src="|data:image/jpg;base64,@{${post.imagePath}}|" class="postImage homeImage"/>
+                <div style="padding-top: 10px;"><a th:href="@{/post/details/{id}/(id=${post.id})}"
+                                                   style="text-decoration: none; color: #008081">More &raquo;</a></div>
             </div>
         </div>
     </div>

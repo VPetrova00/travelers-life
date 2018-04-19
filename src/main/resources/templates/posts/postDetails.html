@@ -1,16 +1,32 @@
-<main>
-    <div id="map" style="width:30%; height:300px"></div>
+<main xmlns:th="http://www.w3.org/1999/xhtml">
+    <form th:object="${postDetailsModel}" method="get">
+        <div class="form-group">
+            <div id="map" style="width:100%; height:300px">
+                <script th:inline="javascript">
+                    /*<![CDATA[*/
 
-    <script>
-        function myMap() {
-            let mapCanvas = document.getElementById("map");
-            let mapOptions = {
-                // center: new google.maps.LatLng(42.698334, 23.319941),
-                zoom: 10
-            };
-            let map = new google.maps.Map(mapCanvas, mapOptions);
-        }
-    </script>
-    <script type="text/javascript"
-            th:src="@{https://maps.googleapis.com/maps/api/js?key=AIzaSyBPSMs5AmweKezisdODLBCFn_PPlZ5fiOA&callback=myMap?q={latitude},{longitude}}"></script>
+                    function myMap() {
+                        let mapCanvas = document.getElementById("map");
+                        let latitude = /*[[*{latitude}]]*/;
+                        let longitude = /*[[*{longitude}]]*/;
+                        let mapOptions = {
+                            center: new google.maps.LatLng(latitude, longitude),
+                            zoom: 10
+                        };
+                        let map = new google.maps.Map(mapCanvas, mapOptions);
+                    }
+
+                    /*]]>*/
+                </script>
+                <script type="text/javascript"
+                        th:src="@{https://maps.googleapis.com/maps/api/js?key=AIzaSyBPSMs5AmweKezisdODLBCFn_PPlZ5fiOA&callback=myMap}"></script>
+            </div>
+
+            <h1 th:text="*{title}"></h1>
+
+            <p th:utext="*{content}"></p>
+
+            <i>by <b><a th:href="@{/users/profile/{username}(username=${username})}" class="author" th:text="${username}" style="color: white; text-decoration: none; font-size: 16px;"></a></b></i>
+        </div>
+    </form>
 </main>
