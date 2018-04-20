@@ -1,0 +1,29 @@
+<main xmlns:th="http://www.w3.org/1999/xhtml">
+    <form th:object="${postDetailsModel}" method="get">
+        <div class="form-group">
+            <h1>All users:</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="user : ${users}">
+                <tr th:class="${user.roles.contains('ROLE_ADMIN') ? 'info' : null}">
+                    <th th:text="${user.id}"></th>
+                    <th th:text="${user.username}"></th>
+                    <th>
+                        <a th:href="@{/users/profile/{username}(username=${user.username})}" style="text-decoration: none; color: white">Profile</a> |
+                        <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" style="text-decoration: none; color: white">Edit</a> |
+                        <a th:href="@{/admin/users/delete/{id}(id=${user.id})}" style="text-decoration: none; color: white">Delete</a>
+                    </th>
+                </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</main>

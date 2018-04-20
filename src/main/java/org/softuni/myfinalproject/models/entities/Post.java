@@ -22,6 +22,7 @@ public class Post {
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     private User author;
 
+    @Lob
     private String content;
 
     private String imagePath;

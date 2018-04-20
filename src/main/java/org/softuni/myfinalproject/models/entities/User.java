@@ -22,7 +22,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles")
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();;
 
     @OneToMany(targetEntity = Post.class, mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Post> posts;
@@ -30,7 +30,6 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.roles = new HashSet<>();
     }
 
     public User() {

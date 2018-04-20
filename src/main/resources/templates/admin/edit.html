@@ -1,0 +1,38 @@
+<main xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="container span=8 offset=2">
+        <form th:action="@{/admin/users/edit/{id}(id=${user.id})}" method="post">
+            <h1>Edit User</h1>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="user_username">Username: </label>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" id="user_username" placeholder="Username" name="username"
+                           required="required" th:value="${user.username}">
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="user_password">Password: </label>
+                <div class="col-sm-4">
+                    <input class="form-control" type="password" id="user_password" placeholder="Password"
+                           name="password" required="required" th:value="${user.password}">
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="user_roles">Roles: </label>
+                <div class="col-sm-6">
+                    <th:block th:each="role : ${roles}">
+                        <input id="user_roles" type="checkbox" name="roles" th:value="${role.id}"
+                               th:text="${role.getSimpleName()}" th:checked="${user.roles.contains(role)}">
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <input value="Edit" type="submit" class="btn btn-default">
+                    <a class="btn btn-danger" th:href="@{/admin/users/}">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>

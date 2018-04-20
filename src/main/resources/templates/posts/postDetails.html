@@ -11,13 +11,14 @@
                         let longitude = /*[[*{longitude}]]*/;
                         let mapOptions = {
                             center: new google.maps.LatLng(latitude, longitude),
-                            zoom: 10
+                            zoom: 12
                         };
                         let map = new google.maps.Map(mapCanvas, mapOptions);
                     }
 
                     /*]]>*/
                 </script>
+
                 <script type="text/javascript"
                         th:src="@{https://maps.googleapis.com/maps/api/js?key=AIzaSyBPSMs5AmweKezisdODLBCFn_PPlZ5fiOA&callback=myMap}"></script>
             </div>

@@ -6,13 +6,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="dropdown" sec:authorize="hasRole('ADMIN')">
-                        <a href="#" class="dropdown-toggle adminPanel" data-toggle="dropdown" role="button"
-                           aria-expanded="false">Admin<span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a th:href="@{/admin/posts/}">Posts</a></li>
-                            <li><a th:href="@{/admin/users/}">Users</a></li>
-                        </ul>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/users}">
+                            Users
+                        </a>
                     </li>
                     <li sec:authorize="isAuthenticated()">
                         <a th:href="@{/users/profile}" class="profile">

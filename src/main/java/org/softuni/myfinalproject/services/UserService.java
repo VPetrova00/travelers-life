@@ -45,11 +45,9 @@ public class UserService implements UserDetailsService{
 
         user.setPassword(bCryptPasswordEncoder.encode(userRegistrationModel.getPassword()));
 
-//        Role role = this.roleService.getUserRole();
-//
-//        user.addRole(role);
+        Role role = this.roleService.getUserRole();
 
-        //TODO: set roles to users!!!
+        user.addRole(role);
 
         this.userRepository.saveAndFlush(user);
     }

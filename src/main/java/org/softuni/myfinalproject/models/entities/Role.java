@@ -2,6 +2,7 @@ package org.softuni.myfinalproject.models.entities;
 
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -56,5 +57,10 @@ public class Role {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    @Transient
+    public String getSimpleName(){
+        return StringUtils.capitalize(this.getName().substring(5).toLowerCase());
     }
 }
