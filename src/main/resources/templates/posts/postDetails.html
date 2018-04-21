@@ -27,7 +27,10 @@
 
             <p th:utext="*{content}"></p>
 
-            <i>by <b><a th:href="@{/users/profile/{username}(username=${username})}" class="author" th:text="${username}" style="color: white; text-decoration: none; font-size: 16px;"></a></b></i>
+            <i>by <b><a th:href="@{/users/profile/{username}(username=${username})}" class="author" th:text="${username}" style="color: white; text-decoration: none; font-size: 16px;"></a></b></i><br/>
+
+            <a th:href="@{/post/edit/{id}(id=${id})}" class="btn btn-default">Edit</a>
+            <a th:href="@{/post/delete/{id}(id=${id})}" class="btn btn-default">Delete</a>
         </div>
     </form>
 </main>

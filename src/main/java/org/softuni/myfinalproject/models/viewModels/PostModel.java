@@ -1,11 +1,6 @@
 package org.softuni.myfinalproject.models.viewModels;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.math.BigDecimal;
-import java.sql.Blob;
-import java.util.Set;
 
 public class PostModel {
 
@@ -15,7 +10,7 @@ public class PostModel {
 
     private String title;
 
-    private String story;
+    private String content;
 
     private String imagePath;
 
@@ -43,12 +38,12 @@ public class PostModel {
         this.title = title;
     }
 
-    public String getStory() {
-        return story;
+    public String getContent() {
+        return content;
     }
 
-    public void setStory(String story) {
-        this.story = story;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getImagePath() {

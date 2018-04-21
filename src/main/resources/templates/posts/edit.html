@@ -1,39 +1,40 @@
 <main xmlns:th="http://www.w3.org/1999/xhtml">
-    <h1>Create your post:</h1>
-    <form th:action="@{/posts/create}" th:object="${viewModel}" method="post">
+    <h1>Edit post:</h1>
+    <form th:action="@{/post/edit/{id}(id=${post.id})}" method="post">
         <div class="form-group">
             <label class="control-label col-sm-2" for="post_latitude">Latitude: </label>
             <div class="col-sm-10">
-                <input th:field="*{latitude}" id="post_latitude" class="form-control" type="text" placeholder="Enter latitude">
+                <input id="post_latitude" class="form-control" type="text" placeholder="Latitude" name="latitude" th:value="${post.latitude}">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="post_longitude">Longitude: </label>
             <div class="col-sm-10">
-                <input th:field="*{longitude}" id="post_longitude" class="form-control" type="text" placeholder="Enter longitude">
+                <input th:value="${post.longitude}" id="post_longitude" class="form-control" type="text" placeholder="Longitude" name="longitude">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="post_title">Title: </label>
             <div class="col-sm-10">
-                <input th:field="*{title}" id="post_title" class="form-control" type="text" placeholder="Enter post title">
+                <input th:value="${post.title}" id="post_title" class="form-control" type="text" placeholder="Post title" name="title">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="post_textarea">Travelling content: </label>
             <div class="col-sm-10">
-                <textarea th:field="*{content}" id="post_textarea" class="form-control" placeholder="Enter content" style="resize: none" rows="10" cols="80" wrap="hard"></textarea>
+                <textarea id="post_textarea" class="form-control" placeholder="Story" name="content" style="resize: none" rows="10" cols="80" wrap="hard" th:field="${post.content}"></textarea>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="post_image">Image: </label>
             <div class="col-sm-10">
-                <input th:field="*{imagePath}" id="post_image" name="file" class="form-control" type="file"/>
+                <input th:value="${post.imagePath}" id="post_image" name="file" class="form-control" type="file"/>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" name="createPostBtn">Create</button>
+                <button type="submit" class="btn btn-default" name="editPostBtn">Edit</button>
+                <a class="btn btn-default" th:href="@{/post/details/{id}/(id = ${post.id})}">Cancel</a>
             </div>
         </div>
     </form>

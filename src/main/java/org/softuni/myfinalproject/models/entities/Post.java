@@ -19,7 +19,7 @@ public class Post {
 
     private String title;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class)
     private User author;
 
     @Lob

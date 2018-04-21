@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -62,15 +61,15 @@ public class PostController {
         }
 
         String wholeImagePathName = imagePath + imageName;
-        String debug = "";
 
         Post post = new Post();
+
         post.setAuthor(userEntity);
         post.setLatitude(postModel.getLatitude());
         post.setLongitude(postModel.getLongitude());
         post.setTitle(postModel.getTitle());
-        post.setContent(postModel.getStory());
         post.setImagePath(wholeImagePathName);
+        post.setContent(postModel.getContent());
 
         this.postRepository.saveAndFlush(post);
 
@@ -95,11 +94,119 @@ public class PostController {
 
         String authorUsername = post.getAuthor().getUsername();
 
-        String debug = "";
         model.addAttribute("username", authorUsername);
         model.addAttribute("postDetailsModel", post);
         model.addAttribute("view", "posts/postDetails");
 
         return "base-layout";
+    }
+
+
+    @GetMapping("/post/edit/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String edit(@PathVariable Long id, Model model){
+        if(!this.postRepository.existsById(id)){
+            return "redirect:/";
+        }
+
+        Post post = this.postRepository.getOne(id);
+
+        if(!isUserAuthorOrAdmin(post)){
+            return "redirect:/post/details/" + id;
+        }
+
+        model.addAttribute("view", "posts/edit");
+        model.addAttribute("post", post);
+
+        return "base-layout";
+    }
+
+    @PostMapping("/post/edit/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String edit(@PathVariable Long id, PostModel postModel, HttpServletRequest httpServletRequest){
+        if(!this.postRepository.existsById(id)){
+            return "redirect:/";
+        }
+
+        Post post = this.postRepository.getOne(id);
+
+        if(!isUserAuthorOrAdmin(post)){
+            return "redirect:/post/details/" + id;
+        }
+
+        String imagePath = "C:\\Users\\User\\Pictures\\photos\\";
+
+        Set<String> parameterNames = httpServletRequest.getParameterMap().keySet();
+        String imageName = "";
+
+        for (String parameterName : parameterNames) {
+            if (parameterName.equals("file")) {
+                imageName = httpServletRequest.getParameter(parameterName);
+            }
+        }
+
+        String wholeImagePathName = imagePath + imageName;
+
+        if (!imageName.equals("")) {
+            postModel.setImagePath(wholeImagePathName);
+        } else {
+            postModel.setImagePath(this.postRepository.getOne(id).getImagePath());
+        }
+
+        post.setLatitude(postModel.getLatitude());
+        post.setLongitude(postModel.getLongitude());
+        post.setImagePath(postModel.getImagePath());
+        post.setContent(postModel.getContent());
+        post.setTitle(postModel.getTitle());
+
+        this.postRepository.saveAndFlush(post);
+
+        return "redirect:/post/details/" + post.getId();
+    }
+
+    @GetMapping("/post/delete/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String delete(Model model, @PathVariable Long id){
+        if(!this.postRepository.existsById(id)){
+            return "redirect:/";
+        }
+
+        Post post = this.postRepository.getOne(id);
+
+        if(!isUserAuthorOrAdmin(post)){
+            return "redirect:/post/details/" + id;
+        }
+
+        model.addAttribute("post", post);
+        model.addAttribute("view", "posts/delete");
+
+        return "base-layout";
+    }
+
+    @PostMapping("/post/delete/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String delete(@PathVariable Long id){
+        if (!this.postRepository.existsById(id)) {
+            return "redirect:/";
+        }
+
+        Post post = this.postRepository.getOne(id);
+
+        if(!isUserAuthorOrAdmin(post)){
+            return "redirect:/post/details/" + id;
+        }
+
+        this.postRepository.delete(post);
+
+        return "redirect:/";
+    }
+
+    private boolean isUserAuthorOrAdmin(Post post){
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        User userEntity = this.userRepository.findByUsername(user.getUsername());
+
+        return userEntity.isAdmin() || userEntity.isAuthor(post);
     }
 }

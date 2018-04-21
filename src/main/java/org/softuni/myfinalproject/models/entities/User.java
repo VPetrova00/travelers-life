@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,7 +25,7 @@ public class User {
     @JoinTable(name = "users_roles")
     private Set<Role> roles = new HashSet<>();;
 
-    @OneToMany(targetEntity = Post.class, mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Post.class, mappedBy = "author")
     private Set<Post> posts;
 
     public User(String username, String password) {
@@ -77,5 +78,15 @@ public class User {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    @Transient
+    public boolean isAdmin() {
+        return this.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+    }
+
+    @Transient
+    public boolean isAuthor(Post post) {
+        return Objects.equals(this.getId(), post.getAuthor().getId());
     }
 }
