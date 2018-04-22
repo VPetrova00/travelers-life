@@ -1,9 +1,13 @@
 package org.softuni.myfinalproject.models.viewModels;
 
+import javax.validation.constraints.NotNull;
+
 public class UserLoginModel {
 
+    @NotNull
     private String username;
 
+    @NotNull
     private String password;
 
     public String getUsername() {

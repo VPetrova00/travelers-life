@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Set;
 
 @Controller
@@ -43,7 +44,7 @@ public class PostController {
 
     @PostMapping("/posts/create")
     @PreAuthorize("isAuthenticated()")
-    public String createPost(PostModel postModel, HttpServletRequest httpServletRequest) {
+    public String createPost(@Valid PostModel postModel, HttpServletRequest httpServletRequest) {
         UserDetails user = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
 
@@ -123,7 +124,7 @@ public class PostController {
 
     @PostMapping("/post/edit/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String edit(@PathVariable Long id, PostModel postModel, HttpServletRequest httpServletRequest){
+    public String edit(@PathVariable Long id, @Valid PostModel postModel, HttpServletRequest httpServletRequest){
         if(!this.postRepository.existsById(id)){
             return "redirect:/";
         }

@@ -6,6 +6,7 @@ import org.softuni.myfinalproject.models.viewModels.UserLoginModel;
 import org.softuni.myfinalproject.models.viewModels.UserRegistrationModel;
 import org.softuni.myfinalproject.repositories.PostRepository;
 import org.softuni.myfinalproject.repositories.UserRepository;
+import org.softuni.myfinalproject.services.NotificationService;
 import org.softuni.myfinalproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,6 +44,9 @@ public class UserController {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/users/register")
     public String register(Model model) {
         model.addAttribute("view", "users/register");
@@ -60,11 +64,18 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegistrationModel", viewModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegistrationModel", bindingResult);
+            this.notificationService.addErrorMessage("Errors when registering");
+            return "redirect:/users/register";
+        }
+
+        if (!viewModel.getPassword().equals(viewModel.getConfirmPassword())) {
+            this.notificationService.addErrorMessage("Password and confirm password don't match");
             return "redirect:/users/register";
         }
 
         this.userService.register(viewModel);
 
+        notificationService.addInfoMessage("Register successful");
         return "redirect:/users/login";
     }
 
