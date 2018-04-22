@@ -1,0 +1,20 @@
+<main xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="form-group" style="text-align: center">
+        <a th:href="@{/add/forumicle}" class="btn btn-default">Add forumicle</a>
+    </div>
+    <div th:each="forumicle: ${forumicles}" style="margin-left: 25%">
+        <div class="container col-md-8">
+            <div class="panel panel-info">
+                <a th:href="@{/users/profile/{username}(username=${forumicle.authorUsername})}" style="text-decoration: none; color: #008081">
+                    <div class="panel-heading"  th:text="${forumicle.authorUsername}"></div>
+                </a>
+                <div class="panel-body">
+                    <p th:text="${forumicle.content}" style="color: #008081"></p>
+                    <a th:href="@{/add/comment/{forumicleId}(forumicleId=${forumicle.id})}" class="btn btn-success" style="float: right;">Comment</a>
+                    <div style="padding-top: 10px;"><a th:href="@{/forumicle/details/{id}(id=${forumicle.id})}"
+                                                       style="text-decoration: none; color: #008081">Comments &raquo;</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

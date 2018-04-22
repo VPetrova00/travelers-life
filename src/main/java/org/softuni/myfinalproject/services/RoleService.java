@@ -30,4 +30,16 @@ public class RoleService {
 
         return role;
     }
+
+    public Role getAdminRole() {
+
+        Role admin = this.findByName("ROLE_ADMIN");
+
+        if (admin == null) {
+            admin = new Role("ROLE_ADMIN");
+            this.roleRepository.saveAndFlush(admin);
+        }
+
+        return admin;
+    }
 }
