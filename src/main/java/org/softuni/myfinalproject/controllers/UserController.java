@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,19 +37,13 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
-    private PostRepository postRepository;
 
     @Autowired
     private NotificationService notificationService;
 
     @GetMapping("/users/register")
-    public String register(Model model) {
+    public String register(@ModelAttribute UserRegistrationModel viewModel, Model model) {
         model.addAttribute("view", "users/register");
 
         if (!model.containsAttribute("viewModel")) {
@@ -59,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping("/users/register")
-    public String register(@Valid UserRegistrationModel viewModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String register(@Valid @ModelAttribute UserRegistrationModel viewModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegistrationModel", viewModel);
@@ -69,6 +64,8 @@ public class UserController {
         }
 
         if (!viewModel.getPassword().equals(viewModel.getConfirmPassword())) {
+            redirectAttributes.addFlashAttribute("userRegistrationModel", viewModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegistrationModel", bindingResult);
             this.notificationService.addErrorMessage("Password and confirm password don't match");
             return "redirect:/users/register";
         }
@@ -89,28 +86,7 @@ public class UserController {
     @GetMapping("/users/profile")
     @PreAuthorize("isAuthenticated()")
     public String userProfile(Model model) throws IOException {
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-
-        User user = this.userRepository.findByUsername(principal.getUsername());
-
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("view", "users/profile");
-
-        List<Post> allPosts = this.postRepository.findByAuthorId(user.getId());
-
-        String encodedImage = "";
-        for (Post post : allPosts) {
-            BufferedImage image = ImageIO.read(new File(post.getImagePath()));
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "jpg", baos);
-            byte[] res = baos.toByteArray();
-             encodedImage = Base64.getEncoder().encodeToString(res);
-             post.setImagePath(encodedImage);
-        }
-
-        model.addAttribute("postModels", allPosts);
+        this.userService.loadProfile(model);
         return "base-layout";
     }
 
@@ -128,26 +104,12 @@ public class UserController {
 
     @GetMapping("/users/profile/{username}")
     public String getProfileByUsername(@PathVariable String username, Model model) throws IOException {
-        if (!this.userRepository.existsByUsername(username)) {
+        if (!this.userService.existsByUsername(username)) {
             return "redirect:/users/profile";
         }
 
-        List<Post> posts = this.postRepository.findByAuthorUsername(username);
+        this.userService.loadProfileByUsername(username, model);
 
-        String encodedImage = "";
-        for (Post post : posts) {
-            BufferedImage image = ImageIO.read(new File(post.getImagePath()));
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "jpg", baos);
-            byte[] res = baos.toByteArray();
-            encodedImage = Base64.getEncoder().encodeToString(res);
-            post.setImagePath(encodedImage);
-        }
-
-        String userName = this.userRepository.findByUsername(username).getUsername();
-        model.addAttribute("view", "users/profile");
-        model.addAttribute("username", userName);
-        model.addAttribute("postModels", posts);
         return "base-layout";
     }
 }

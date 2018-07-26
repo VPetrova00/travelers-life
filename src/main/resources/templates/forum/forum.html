@@ -5,14 +5,14 @@
     <div th:each="forumicle: ${forumicles}" style="margin-left: 25%">
         <div class="container col-md-8">
             <div class="panel panel-info">
-                <a th:href="@{/users/profile/{username}(username=${forumicle.authorUsername})}" style="text-decoration: none; color: #008081">
+                <a th:href="@{/users/profile/{username}(username=${forumicle.authorUsername})}" style="text-decoration: none; color: grey">
                     <div class="panel-heading"  th:text="${forumicle.authorUsername}"></div>
                 </a>
                 <div class="panel-body">
-                    <p th:text="${forumicle.content}" style="color: #008081"></p>
+                    <p th:text="${forumicle.content}" style="color: grey"></p>
                     <a th:href="@{/add/comment/{forumicleId}(forumicleId=${forumicle.id})}" class="btn btn-success" style="float: right;">Comment</a>
                     <div style="padding-top: 10px;"><a th:href="@{/forumicle/details/{id}(id=${forumicle.id})}"
-                                                       style="text-decoration: none; color: #008081">Comments &raquo;</a></div>
+                                                       style="text-decoration: none; color: grey">Comments &raquo;</a></div>
                 </div>
             </div>
         </div>

@@ -8,6 +8,8 @@ import org.softuni.myfinalproject.repositories.PostRepository;
 import org.softuni.myfinalproject.repositories.RoleRepository;
 import org.softuni.myfinalproject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +57,14 @@ public class AdminUserController {
         }
 
         User user = this.userRepository.getOne(id);
+
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        if (user.getUsername().equals(principal.getUsername())) {
+            return "redirect:/admin/users";
+        }
+
         List<Role> roles = this.roleRepository.findAll();
 
         model.addAttribute("user", user);
@@ -105,6 +115,12 @@ public class AdminUserController {
         }
 
         User user = this.userRepository.getOne(id);
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        if (user.getUsername().equals(principal.getUsername())) {
+            return "redirect:/admin/users";
+        }
 
         model.addAttribute("user", user);
         model.addAttribute("view", "admin/users/delete");

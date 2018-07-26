@@ -5,8 +5,25 @@
     <link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet">
    <style>
        body {
-           background-color: #008081;
+           background-color: grey;
            color: white;
+       }
+
+       .container > .jumbotron {
+           background: white;
+           color: grey;
+           -webkit-animation: mymove 3s infinite;
+           animation: mymove 3s infinite;
+       }
+
+       @keyframes mymove {
+           50% {box-shadow: 5px 5px 30px black;}
+       }
+
+       .container > .jumbotron:hover {
+           background: darkgrey;
+           color: white;
+           transition: 1s;
        }
 
        .form-group button {
@@ -69,10 +86,20 @@
        }
 
        .navbar-default .navbar-nav > li > a {
-           color: #008081;
+           color: grey;
+       }
+
+       .navbar-default .navbar-nav > li > a:hover {
+           color: white;
+           background-color:rgba(0,0,0,0.3);
        }
        .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand {
-           color: #008081;
+           color: grey;
+       }
+
+       .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
+           color: white;
+           background-color:rgba(0,0,0,0.3);
        }
 
        .panel-info {
@@ -80,28 +107,17 @@
        }
 
        .panel-info > .panel-heading {
-           color: #008081;
+           color: grey;
            background-color: white;
-           border: 2px solid #008081;
+           border: 2px solid grey;
        }
 
        .panel-body {
-           border: 2px solid #008081;
+           border: 2px solid grey;
        }
 
        .btn-default {
-           color: #008081;
-       }
-
-       @media screen and (max-width: 500px) {
-           .header a {
-               float: none;
-               display: block;
-               text-align: left;
-           }
-           header {
-               float: none;
-           }
+           color: grey;
        }
    </style>
 </head>

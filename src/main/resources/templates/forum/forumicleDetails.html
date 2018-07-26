@@ -3,12 +3,12 @@
         <div class="form-group" th:object="${forumicleDetailsModel}">
             <h1 th:text="|Forumicle by ${authorUsername}|"></h1>
 
-            <p th:utext="*{content}" style="background-color: white; color: #008081; padding-left: 5px; border-radius: 10px"></p>
+            <p th:utext="*{content}" style="background-color: white; color: grey; padding-left: 5px; border-radius: 10px"></p>
         </div>
         <strong style="margin-left: 50%">Comments:</strong><br/>
         <th:block th:each="comment : ${comments}">
-            <div class="form-group col-sm-8" style="background-color: white; color: #008081; margin-left: 20%; border-radius: 15px">
-                <a th:href="@{/users/profile/{username}(username=${comment.authorUsername})}" th:utext="|*{comment.authorUsername}|" style="text-decoration: none; color: #008081"></a>: <span th:utext="*{comment.content}|"></span>
+            <div class="form-group col-sm-8" style="background-color: white; color: grey; margin-left: 20%; border-radius: 15px">
+                <a th:href="@{/users/profile/{username}(username=${comment.authorUsername})}" th:utext="|*{comment.authorUsername}|" style="text-decoration: none; color: grey"></a>: <span th:utext="*{comment.content}|"></span>
             </div>
         </th:block>
     </form>

@@ -1,4 +1,12 @@
 <main xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Travelers' life</h1>
+            <p>Share beautiful moments from your travelling experience with others and make them want to go where you
+                had been.</p>
+        </div>
+    </div>
+
     <div class="container col-md-8 homePost">
         <div class="panel panel-info" th:each="post: ${allPosts}">
             <div class="panel-heading" th:text="*{post.title}"></div>

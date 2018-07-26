@@ -1,30 +1,32 @@
 <main xmlns:th="http://www.w3.org/1999/xhtml">
-    <!--TODO: made info messages about passwords-->
     <h1>Register</h1>
-    <form th:action="@{/users/register}" th:object="${viewModel}" method="post">
+    <form th:action="@{/users/register}" th:object="${viewModel}" method="post" name="registerForm">
         <div class="form-group">
             <label class="control-label col-sm-2" for="registerUsername">Username:</label>
             <div class="col-sm-10">
-                <input th:field="*{username}" type="text" class="form-control" id="registerUsername" placeholder="Enter username">
+                <input th:field="*{username}" name="username" type="text" class="form-control" id="registerUsername"
+                       placeholder="Enter username" required>
+                <small id="usernameHelp" style=" margin: auto; color: tomato; display: none">Enter more than 4 symbols.</small>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="registerPassword">Password:</label>
             <div class="col-sm-10">
-                <input th:field="*{password}" type="password" class="form-control" id="registerPassword"
-                       placeholder="Enter password">
+                <input th:field="*{password}" name="password" type="password" class="form-control" id="registerPassword"
+                       placeholder="Enter password" required>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="confirm-password">Confirm password:</label>
             <div class="col-sm-10">
-                <input th:field="*{confirmPassword}" type="password" class="form-control" id="confirm-password"
-                       placeholder="Enter password again">
+                <input th:field="*{confirmPassword}" name="confirmPassword" type="password" class="form-control"
+                       id="confirm-password"
+                       placeholder="Enter password again" required>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Register</button>
+                <button type="submit" class="btn btn-default" id="registerBtn" onclick="stoppedTyping()">Register</button>
             </div>
         </div>
     </form>
